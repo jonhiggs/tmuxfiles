@@ -11,6 +11,22 @@ function battery_charge() {
   echo ${BATTERY_CHARGE}
 }
 
+function battery_state() {
+  if [[ -z ${BATTERY_STATE} ]]; then
+    BATTERY_STATE=$(
+      pmset -g batt |
+        tail -n1 |
+        awk '{ print $3 }' |
+        tr -d [:punct:]
+    )
+  fi
+
+  case ${BATTERY_STATE} in
+    "charged")     return 1 ;;
+    "discharging") return 2 ;;
+  esac
+}
+
 function power_source() {
   if [[ -z ${POWER_SOURCE} ]]; then
     POWER_SOURCE=$(
@@ -22,26 +38,6 @@ function power_source() {
     )
   fi
   echo ${POWER_SOURCE}
-}
-
-function battery_state() {
-  case $(power_source) in
-    "AC")
-      if [[ $(battery_charge) -ge 100 ]]; then
-        return 1
-      else
-        return 2
-      fi
-    ;;
-
-    "Battery")
-      if [[ $(battery_charge) -gt 15 ]]; then
-        return 3
-      else
-        return 4
-      fi
-    ;;
-  esac
 }
 
 function battery_symbol() {
