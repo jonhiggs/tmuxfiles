@@ -15,7 +15,7 @@ function help() {
 }
 
 function left() {
-  echo "left"
+  echo -n "left"
 }
 
 function right() {
