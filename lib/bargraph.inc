@@ -1,34 +1,34 @@
 function bargraph() {
   case $(( $1 / 10 )) in
     0)
-      echo -n
+      echo -n " "
       ;;
     1)
-      echo -n ▁
+      echo -n "▁"
       ;;
     2)
-      echo -n ▂
+      echo -n "▂"
       ;;
     3)
-      echo -n ▃
+      echo -n "▃"
       ;;
     4)
-      echo -n ▄
+      echo -n "▄"
       ;;
     5)
-      echo -n ▅
+      echo -n "▄"         # intentionally same as 4
       ;;
     6)
-      echo -n ▆
+      echo -n "▅"
       ;;
     7)
-      echo -n ▇
+      echo -n "▆"
       ;;
     8)
-      echo -n █
+      echo -n "▇"
       ;;
-    9)
-      echo -n █
+    *)
+      echo -n "█"
       ;;
   esac
 }

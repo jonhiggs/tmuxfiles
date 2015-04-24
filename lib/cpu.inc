@@ -22,4 +22,9 @@ function cpu_used() {
   echo "100 - $(cpu_idle)" | bc
 }
 
+
+function cpu_graph() {
+  bargraph $(printf "%.0f" $(cpu_used))
+}
+
 # vim: ft=sh

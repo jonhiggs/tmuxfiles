@@ -50,4 +50,8 @@ function battery_symbol() {
   esac
 }
 
+function battery_graph() {
+  bargraph $(battery_charge)
+}
+
 # vim: ft=sh
