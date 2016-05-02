@@ -1,27 +1,19 @@
 function battery_charge() {
-  if [[ -z ${BATTERY_CHARGE} ]]; then
-    BATTERY_CHARGE=$(
-      pmset -g batt |
-        tail -n1 |
-        awk '{ print $2 }' |
-        tr -d [:punct:]
-    )
-  fi
-
-  echo ${BATTERY_CHARGE}
+  pmset -g batt |
+    tail -n1 |
+    awk '{ print $2 }' |
+    tr -d [:punct:]
 }
 
 function battery_state() {
-  if [[ -z ${BATTERY_STATE} ]]; then
-    BATTERY_STATE=$(
-      pmset -g batt |
-        tail -n1 |
-        awk '{ print $3 }' |
-        tr -d [:punct:]
-    )
-  fi
+  local state=$(
+    pmset -g batt |
+      tail -n1 |
+      awk '{ print $3 }' |
+      tr -d [:punct:]
+  )
 
-  case ${BATTERY_STATE} in
+  case ${state} in
     "charged")     return 1 ;;
     "discharging") return 2 ;;
   esac
