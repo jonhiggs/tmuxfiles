@@ -1,17 +1,5 @@
 function cpu() {
-  if [[ -z ${CPU} ]]; then
-    CPU=`top -l 2 -d | grep CPU\ usage | tail -n1 | awk '{ print $3, $5, $7 }' | tr -d %`
-  fi
-
-  echo $CPU
-}
-
-function cpu_user() {
-  cpu | cut -d\  -f1
-}
-
-function cpu_sys() {
-  cpu | cut -d\  -f2
+  top -l 2 -d | grep CPU\ usage | tail -n1 | awk '{ print $3, $5, $7 }' | tr -d %
 }
 
 function cpu_idle() {

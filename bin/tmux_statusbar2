@@ -3,7 +3,6 @@ source $(dirname $0)/../lib/bargraph.inc
 source $(dirname $0)/../lib/cpu.inc
 source $(dirname $0)/../lib/memory.inc
 source $(dirname $0)/../lib/power.inc
-source $(dirname $0)/../etc/symbols.conf
 
 function int_to_float() {
   printf "%2.0f" $1
