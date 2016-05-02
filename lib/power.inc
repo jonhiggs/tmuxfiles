@@ -2,7 +2,7 @@ function battery_charge() {
   pmset -g batt |
     tail -n1 |
     awk '{ print $2 }' |
-    tr -d [:punct:]
+		sed 's/[^0-9]//g'
 }
 
 function battery_state() {

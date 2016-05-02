@@ -12,11 +12,8 @@ function bargraph() {
     3)
       echo -n "▃"
       ;;
-    4)
+    4|5)
       echo -n "▄"
-      ;;
-    5)
-      echo -n "▄"         # intentionally same as 4
       ;;
     6)
       echo -n "▅"
