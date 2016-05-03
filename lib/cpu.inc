@@ -1,15 +1,15 @@
-function cpu() {
-  top -l 2 -d | grep CPU\ usage | tail -n1 | awk '{ print $3, $5, $7 }' | tr -d %
-}
-
-function cpu_idle() {
-  cpu | cut -d\  -f3
-}
-
 function cpu_used() {
-  echo "100 - $(cpu_idle)" | bc
+  samples_to_take=2
+  top -l${samples_to_take} -d \
+    | awk '
+        /CPU\ usage/  {
+                        gsub("%", "");
+                        sum+=$3;
+                        n++;
+                      }
+        END           { print 100 - (sum / n) }
+      '
 }
-
 
 function cpu_graph() {
   bargraph $(printf "%.0f" $(cpu_used))
