@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+source ~/Repos/aws_prompt/lib.inc
+aws_load
+if _aws_authenticated; then
+  _aws_account_name
+else
+  echo "personal"
+fi
+
