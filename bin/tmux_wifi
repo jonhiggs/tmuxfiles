@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+connected="▴"
+connecting="▸"
+disconnected="▾"
+
+airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
+
+case "$(${airport} -I | awk '/state:/ { print $2 }')" in
+  "Off")      echo "${disconnected}"  ;;
+  "running")  echo "${connected}"     ;;
+  "init")     echo "${connecting}"    ;;
+  *)          echo "?"                ;;
+esac
