@@ -4,7 +4,7 @@ function cpu_used() {
     | awk '
         /CPU\ usage/  {
                         gsub("%", "");
-                        sum+=$3;
+                        sum+=$7;
                         n++;
                       }
         END           { print 100 - (sum / n) }
