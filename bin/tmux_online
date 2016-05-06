@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+online="▴"
+offline="_"
+target="www.google.com"
+
+if ping -c1 -t1 ${target} &> /dev/null; then
+  echo ${online}
+else
+  echo ${offline}
+fi
