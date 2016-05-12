@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+source ${HOME}/.bash_environment
+echo ${DOCKER_MACHINE_NAME}
