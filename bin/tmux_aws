@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
-source ~/Repos/aws_prompt/lib.inc
-aws_load
-if _aws_authenticated; then
-  _aws_account_name
-else
-  echo "personal"
-fi
-
+source ${HOME}/Repos/rea-as-switcher/lib.inc
+aws_stick
+_aws_stuck_to || echo "personal"
