@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+source ${HOME}/Repos/bash-itunes/itunes
+
+# monkeypatch _show_track
+function _show_track() {
+    local row_prefix="$1"
+    local row_idx="${2:-0}"
+    local brief="${3:-0}"
+    local preamble="$4"
+
+    #  Ho ho.
+    eval "local name=\${${row_prefix}_name[row_idx]}"
+    eval "local artist=\${${row_prefix}_artist[row_idx]}"
+    eval "local album=\${${row_prefix}_album[row_idx]}"
+    eval "local year=\${${row_prefix}_year[row_idx]}"
+    eval "local rating=\${${row_prefix}_rating[row_idx]}"
+    eval "local time=\${${row_prefix}_time[row_idx]}"
+    eval "local id=\${${row_prefix}_id[row_idx]}"
+
+    if [ -n "$preamble" ]; then
+        preamble="$preamble "
+    fi
+
+    echo "$name - ${artist}"
+}
+
+_cmd_info
