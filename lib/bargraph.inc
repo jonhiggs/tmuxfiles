@@ -1,18 +1,18 @@
 function bargraph() {
   case $(( $1 / 10 )) in
-    0)
+    0|1)
       echo -n " "
       ;;
-    1)
+    2)
       echo -n "▁"
       ;;
-    2)
+    3)
       echo -n "▂"
       ;;
-    3)
+    4)
       echo -n "▃"
       ;;
-    4|5)
+    5)
       echo -n "▄"
       ;;
     6)
@@ -29,3 +29,5 @@ function bargraph() {
       ;;
   esac
 }
+
+# vim ft=sh
