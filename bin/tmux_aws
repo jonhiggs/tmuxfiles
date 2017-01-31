@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-source ${HOME}/Repos/rea-as-switcher/rea-as-switcher.inc
-rea-as-stick
-_rea-as-alias_of $(_rea-as-stuck_to) || echo "personal"
