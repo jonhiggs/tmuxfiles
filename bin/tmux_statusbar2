@@ -23,7 +23,6 @@ function right() {
   echo -n "C $(cpu_graph) "
   echo -n "M $(memory_graph) "
   echo -n "B $(battery_graph) "
-  echo -n "| $($(dirname $0)/tmux_online) "
 }
 
 [[ $# -eq 0 ]] && help
