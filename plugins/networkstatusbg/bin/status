@@ -9,3 +9,4 @@ if ping -c1 -t1 ${target} &> /dev/null; then
 else
   echo -n ${offline}
 fi
+echo -n '#[fg=colour015]'

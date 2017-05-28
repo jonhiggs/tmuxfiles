@@ -7,7 +7,7 @@ function interpolate_options() {
     | envsubst
 }
 
-export CMD="#(${BIN_DIR}/status)"
+export CMD="#(${BIN_DIR}/status) "
 
 for option in status-left status-right; do
   tmux set-option -gq "${option}" "$(interpolate_options "${option}")"
