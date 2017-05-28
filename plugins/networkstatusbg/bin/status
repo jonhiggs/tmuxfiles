@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-online="▴"
-offline="_"
+
+online="#[bg=colour025]"
+offline="#[bg=colour088]"
 target="www.google.com"
 
 if ping -c1 -t1 ${target} &> /dev/null; then
-  echo ${online}
+  echo -n ${online}
 else
-  echo ${offline}
+  echo -n ${offline}
 fi

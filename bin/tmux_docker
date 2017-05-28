@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-[[ -e ${DOCKER_MACHINE_NAME} ]] \
-  && echo "(${DOCKER_MACHINE_NAME}) "
