@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+source "$(dirname "$0")/../lib/bargraph.sh"
+THRESHOLD=80
+
+function _memory_pressure() {
+  local used=$(
+    memory_pressure             \
+      | grep 'free percentage'  \
+      | awk '{ print $5 }'      \
+      | tr -d %
+    )
+  echo $(( 100 - ${used} ))
+}
+
+function memory_graph() {
+  bargraph $(_memory_pressure)
+}
+
+used=$(_memory_pressure)
+if [[ ${used} -gt ${THRESHOLD} ]]; then
+  color='#[fg=red]'
+else
+  color='#[fg=colour007]'
+fi
+
+printf "M %s%s#[fg=colour015]" "${color}" "$(bargraph "${used}")"
+
+# vim: ft=sh

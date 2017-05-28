@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+source "$(dirname "$0")/../lib/bargraph.sh"
+THRESHOLD=80
+
+function cpu_used() {
+  local samples_to_take usage
+  samples_to_take=2
+  usage=$(
+    top -l${samples_to_take} -d \
+      | awk '
+          /CPU\ usage/  {
+                          gsub("%", "");
+                          sum+=$7;
+                          n++;
+                        }
+          END           { print 100 - (sum / n) }
+        '
+  )
+  printf "%.0f" ${usage}
+}
+
+used=$(cpu_used)
+if [[ ${used} -gt ${THRESHOLD} ]]; then
+  color='#[fg=red]'
+else
+  color='#[fg=colour007]'
+fi
+
+printf "C %s%s#[fg=colour015]" "${color}" "$(bargraph "${used}")"
