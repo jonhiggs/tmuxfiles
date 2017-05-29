@@ -13,10 +13,16 @@ function battery_graph() {
   bargraph $(battery_charge)
 }
 
+function battery_state() {
+  pmset -g batt \
+    | awk '/InternalBattery/ { print $3 }' \
+    | tr -d ';'
+}
+
 charge=$(_charge)
-if [[ ${charge} -gt 95 ]]; then
+if [[ "$(battery_state)" == "charging" ]]; then
   color='#[fg=green]'
-elif [[ ${charge} -lt 10 ]]; then
+elif [[ "$(battery_state)" == "discharging" ]] && [[ ${charge} -lt 20 ]]; then
   color='#[fg=red]'
 else
   color='#[fg=colour015]'
