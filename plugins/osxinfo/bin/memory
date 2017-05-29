@@ -20,7 +20,7 @@ used=$(_memory_pressure)
 if [[ ${used} -gt ${THRESHOLD} ]]; then
   color='#[fg=red]'
 else
-  color='#[fg=colour007]'
+  color='#[fg=colour015]'
 fi
 
 printf "M %s%s#[fg=colour015]" "${color}" "$(bargraph "${used}")"
