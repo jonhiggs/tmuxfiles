@@ -2,11 +2,8 @@
 source "$(dirname "$0")/../lib/bargraph.sh"
 
 function _charge() {
-  pmset -g batt               \
-    | tail -n1                \
-    | cut -d$'\t' -f2         \
-    | awk -F\; '{ print $1 }' \
-    | sed 's/[^0-9]//'
+  pmset -g batt \
+    | awk '/InternalBattery/ { print int($2) }'
 }
 
 function battery_graph() {
@@ -20,7 +17,8 @@ function battery_state() {
 }
 
 charge=$(_charge)
-if [[ "$(battery_state)" == "charging" ]]; then
+battery_state="$(battery_state)"
+if [[ "${battery_state}" == "charging" ]] || [[ "${battery_state}" == "AC" ]]; then
   color='#[fg=colour172]'
 elif [[ "$(battery_state)" == "charged" ]]; then
   color='#[fg=green]'
@@ -30,4 +28,5 @@ else
   color='#[fg=colour015]'
 fi
 
+[[ "${charge}" -le 20 ]] && charge=20
 printf "B %s%s#[fg=colour015]" "${color}" "$(bargraph "${charge}")"
