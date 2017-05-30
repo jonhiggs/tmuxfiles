@@ -3,7 +3,9 @@ source "$(dirname "$0")/../lib/bargraph.sh"
 
 function _charge() {
   pmset -g batt \
-    | awk '/InternalBattery/ { print int($2) }'
+    | awk '/InternalBattery/' \
+    | grep -E -o '[0-9]+%;' \
+    | tr -d '%;'
 }
 
 function battery_graph() {
@@ -12,8 +14,9 @@ function battery_graph() {
 
 function battery_state() {
   pmset -g batt \
-    | awk '/InternalBattery/ { print $3 }' \
-    | tr -d ';'
+    | awk '/InternalBattery/' \
+    | cut -d\; -f2 \
+    | tr -d ' '
 }
 
 charge=$(_charge)
