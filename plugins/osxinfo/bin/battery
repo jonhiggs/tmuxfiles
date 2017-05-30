@@ -21,6 +21,8 @@ function battery_state() {
 
 charge=$(_charge)
 if [[ "$(battery_state)" == "charging" ]]; then
+  color='#[fg=colour172]'
+elif [[ "$(battery_state)" == "charged" ]]; then
   color='#[fg=green]'
 elif [[ "$(battery_state)" == "discharging" ]] && [[ ${charge} -lt 20 ]]; then
   color='#[fg=red]'
