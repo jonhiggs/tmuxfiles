@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+redis_running() {
+  port=$(tmux show-environment REDIS_PORT 2> /dev/null | cut -d= -f2-)
+  [[ -z "${port}" ]] && return 1
+  lsof -i :${port} &> /dev/null
+  return $?
+}
+
+redis_socket() {
+  local socket
+  socket=$(tmux show-environment REDIS_SOCKET 2> /dev/null | cut -d= -f2-)
+
+  if [[ -f ${socket} ]]; then
+    echo "${socket}"
+    return 0
+  fi
+
+  socket=$(mktemp)
+  echo ${socket}
+}
+
+redis_port() {
+  local port
+  port=6379
+  while lsof -i :${port} &> /dev/null; do
+    port=$(( ${port} + 1 ))
+  done
+  echo ${port}
+}
+
+redis_start() {
+  echo "starting redis"
+  cat <<EOF | sed -e 's/^.{4}//' | redis-server -
+    unixsocket ${REDIS_SOCKET}
+    port ${REDIS_PORT}
+    unixsocketperm 775
+    daemonize yes
+    stop-writes-on-bgsave-error no
+    rdbcompression yes
+    maxmemory 4M
+    maxmemory-policy allkeys-lru
+EOF
+
+  for var in REDIS_SOCKET REDIS_PORT; do
+    tmux set-environment ${var} "${!var}"
+  done
+}
+
+redis_running && exit 0
+
+REDIS_SOCKET=$(redis_socket)
+REDIS_PORT=$(redis_port)
+redis_start
