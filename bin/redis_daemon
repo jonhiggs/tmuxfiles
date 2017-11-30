@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+_get_port() {
+  port=6379
+  while ! lsof -i :${port}; do
+    port=$(( ${port} + 1 ))
+  done
+  echo ${port}
+}
+
+port=$(_get_port)
+socket=$(gmktemp --suffix=.sock)
+cd $(dirname $0)/../
+
+tmux set-environment REDIS_SOCKET ${socket}
+
+cat <<EOF | redis-server -
+daemonize no
+maxmemory 4M
+maxmemory-policy allkeys-lru
+port ${port}
+rdbcompression yes
+stop-writes-on-bgsave-error no
+unixsocket ${socket}
+unixsocketperm 775
+EOF
+
+echo -n 'OK' | redis-cli -s ${socket} -x set healthcheck
+
+rm ${socket}
