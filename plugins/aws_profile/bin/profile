@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-tmux show-environment | awk -F '=' '/^AWS_DEFAULT_PROFILE/ { print $2 }'
+redis-cli get AWS_DEFAULT_PROFILE | tr -d '"'
