@@ -1,7 +1,6 @@
 URL="http://reg.bom.gov.au/fwo/IDV60901/IDV60901.95936.json"
 CACHE_DURATION=1200
-REDIS_SOCKET=$(tmux show-environment REDIS_SOCKET | cut -d= -f2-)
-REDIS_CMD="redis-cli -s ${REDIS_SOCKET}"
+REDIS_CMD="redis-cli"
 
 get_data() {
   data=$(${REDIS_CMD} get weather_data)
