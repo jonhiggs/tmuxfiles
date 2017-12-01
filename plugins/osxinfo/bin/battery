@@ -8,10 +8,6 @@ function _charge() {
     | tr -d '%;'
 }
 
-function battery_graph() {
-  bargraph $(battery_charge)
-}
-
 function battery_state() {
   pmset -g batt \
     | awk '/InternalBattery/' \
