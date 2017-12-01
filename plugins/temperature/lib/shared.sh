@@ -1,5 +1,5 @@
 URL="http://reg.bom.gov.au/fwo/IDV60901/IDV60901.95936.json"
-CACHE_DURATION=1200
+CACHE_DURATION=600
 REDIS_CMD="redis-cli -s /tmp/redis.sock"
 
 get_data() {
