@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-redis-cli get AWS_DEFAULT_PROFILE | tr -d '"'
+redis-cli -s /tmp/redis.sock get AWS_DEFAULT_PROFILE | tr -d '"'

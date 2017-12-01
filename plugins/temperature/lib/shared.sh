@@ -1,6 +1,6 @@
 URL="http://reg.bom.gov.au/fwo/IDV60901/IDV60901.95936.json"
 CACHE_DURATION=1200
-REDIS_CMD="redis-cli"
+REDIS_CMD="redis-cli -s /tmp/redis.sock"
 
 get_data() {
   data=$(${REDIS_CMD} get weather_data)
