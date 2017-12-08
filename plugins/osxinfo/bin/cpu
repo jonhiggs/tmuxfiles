@@ -1,6 +1,21 @@
 #!/usr/bin/env bash
 source "$(dirname "$0")/../lib/bargraph.sh"
 THRESHOLD=80
+CACHE_DURATION=5
+REDIS_CMD="redis-cli -s /tmp/redis.sock"
+
+get_data() {
+  data=$(${REDIS_CMD} get cpu_data)
+  if [[ -n "${data}" ]]; then
+    echo ${data}
+    return 0
+  fi
+
+  data=$(cpu_used)
+  ${REDIS_CMD} set cpu_data "${data}" > /dev/null
+  ${REDIS_CMD} expire cpu_data ${CACHE_DURATION} > /dev/null
+  echo ${data}
+}
 
 function cpu_used() {
   local samples_to_take usage
@@ -19,7 +34,7 @@ function cpu_used() {
   printf "%.0f" ${usage}
 }
 
-used=$(cpu_used)
+used=$(get_data)
 if [[ ${used} -gt ${THRESHOLD} ]]; then
   color='#[fg=red]'
 else
