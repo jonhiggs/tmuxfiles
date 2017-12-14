@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+tmux send-keys -t:4 C-z "cd $1; tig status; tmux select-window -t:1" Enter
+tmux select-window -t:4
