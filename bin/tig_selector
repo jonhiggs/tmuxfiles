@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
-tmux send-keys -t:4 C-z "cd $1; tig status; tmux select-window -t:1" Enter
-tmux select-window -t:4
+TMUX_WINDOW=9
+tmux new-window -t ${TMUX_WINDOW} -n tmux -- bash --noprofile --norc
+tmux send-keys -t:${TMUX_WINDOW} C-z "cd $1; tig status; exit" Enter
+tmux select-window -t:${TMUX_WINDOW}
