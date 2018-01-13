@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+dir=$(dirname $0)
+
+${dir}/buffer_sync/bin/buffer_sync
