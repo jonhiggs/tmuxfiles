@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 source "$(dirname "$0")/../lib/bargraph.sh"
 source "$(dirname "$0")/../lib/redis.sh"
-THRESHOLD=80
+THRESHOLD_PERCENT=80
+THRESHOLD_TEMP=60
 CACHE_DURATION=5
 REDIS_CMD="redis-cli -s /tmp/redis.sock"
 
@@ -41,7 +42,10 @@ function cpu_used() {
 }
 
 used=$(get_data)
-if [[ ${used} -gt ${THRESHOLD} ]]; then
+temp=$(osx-cpu-temp | cut -d. -f1)
+if [[ ${used} -gt ${THRESHOLD_PERCENT} ]]; then
+  color='#[fg=red]'
+elif [[ ${temp} -gt ${THRESHOLD_TEMP} ]]; then
   color='#[fg=red]'
 else
   color='#[fg=colour015]'
