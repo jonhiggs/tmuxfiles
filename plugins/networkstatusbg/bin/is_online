@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+hostname="1.1.1.1"
+CACHE_DURATION=3
+REDIS_CMD="redis-cli -s /tmp/redis.sock"
+
+online_status() {
+  if ping -c1 -t1 ${hostname} &> /dev/null; then
+    echo "true"
+  else
+    echo "false"
+  fi
+}
+
+set_status() {
+  status=$(online_status)
+  ${REDIS_CMD} set is_online "${status}" &> /dev/null
+  ${REDIS_CMD} expire is_online ${CACHE_DURATION} &> /dev/null
+  echo "${status}"
+}
+
+get_status() {
+  status=$(${REDIS_CMD} get is_online 2> /dev/null)
+  if [[ -z ${status} ]]; then
+    return 1
+  else
+    echo ${status}
+  fi
+}
+
+status=$(get_status || set_status)
+[[ ${status} == "true" ]] || exit 1
