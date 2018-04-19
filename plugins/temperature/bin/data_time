@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 source $(dirname $0)/../lib/shared.sh
-data_date=$(get_data | jq .local_date_time -r | cut -d\/ -f2)
+data_date=$(get_observation_data | jq .local_date_time -r | cut -d\/ -f2)
 data_epoch=$(gdate --date="${data_date}" +%s)
 now_epoch=$(gdate +%s)
 data_age=$(( ${now_epoch} - ${data_epoch} ))
