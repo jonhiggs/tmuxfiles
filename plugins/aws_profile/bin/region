@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-redis-cli -s /tmp/redis.sock get AWS_DEFAULT_REGION | tr -d '"'

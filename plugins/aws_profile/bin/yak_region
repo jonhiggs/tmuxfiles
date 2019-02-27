@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+redis-cli -s /tmp/redis.sock --raw get yak_region
