@@ -20,7 +20,7 @@ get_data() {
 }
 
 function cpu_used() {
-  top -b -n2 -p1 | awk '/^%Cpu/ { s+=$8 } END { print 100 - int(s / 2) }'
+  top -b -n2 -p1 | awk '/^%Cpu/ { s=$8 } END { print 100 - int(s) }'
 }
 
 used=$(get_data)
