@@ -2,30 +2,23 @@
 source "$(dirname "$0")/../lib/bargraph.sh"
 
 function _charge() {
-  pmset -g batt \
-    | awk '/InternalBattery/' \
-    | grep -E -o '[0-9]+%;' \
-    | tr -d '%;'
+  acpi | awk -F, '/Battery\ 0/ { print int($2) }'
 }
 
 function battery_state() {
-  pmset -g batt \
-    | awk '/InternalBattery/' \
-    | cut -d\; -f2 \
-    | tr -d ' '
+  acpi | awk '/Battery\ 0/ { sub(",","",$3); print $3 }'
 }
 
 charge=$(_charge)
 battery_state="$(battery_state)"
-if [[ "${battery_state}" == "charging" ]] || [[ "${battery_state}" == "AC" ]]; then
+if [[ "${battery_state}" == "Charging" ]] || [[ "${battery_state}" == "AC" ]]; then
   color='#[fg=colour172]'
-elif [[ "$(battery_state)" == "charged" ]]; then
+elif [[ "$(battery_state)" == "Charged" ]]; then
   color='#[fg=green]'
-elif [[ "$(battery_state)" == "discharging" ]] && [[ ${charge} -lt 20 ]]; then
+elif [[ "$(battery_state)" == "Discharging" ]] && [[ ${charge} -lt 20 ]]; then
   color='#[fg=red]'
 else
   color='#[fg=colour015]'
 fi
 
-[[ "${charge}" -le 20 ]] && charge=20
-printf "B %s%s#[fg=colour015]" "${color}" "$(bargraph "${charge}")"
+printf "B:%s%s#[fg=colour015]${color}${charge}%%"

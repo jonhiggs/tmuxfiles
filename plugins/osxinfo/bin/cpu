@@ -20,25 +20,7 @@ get_data() {
 }
 
 function cpu_used() {
-  key="cpu_usage"
-  get_data_from_cache "${key}" && return 0
-
-  local samples_to_take usage
-  samples_to_take=2
-  usage=$(
-    top -l${samples_to_take} -d \
-      | awk '
-          /CPU\ usage/  {
-                          gsub("%", "");
-                          sum+=$7;
-                          n++;
-                        }
-          END           { print 100 - (sum / n) }
-        '
-  )
-  data=$(printf "%.0f" ${usage})
-  cache_data "${key}" "${data}" 5
-  echo "${data}"
+  top -b -n2 -p1 | awk '/^%Cpu/ { s+=$8 } END { print 100 - int(s / 2) }'
 }
 
 used=$(get_data)
@@ -51,4 +33,4 @@ else
   color='#[fg=colour015]'
 fi
 
-printf "C %s%s#[fg=colour015]" "${color}" "$(bargraph "${used}")"
+printf "C:%s%s%%#[fg=colour015]" ${color} ${used}

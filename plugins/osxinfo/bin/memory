@@ -12,17 +12,28 @@ function _memory_pressure() {
   echo $(( 100 - ${used} ))
 }
 
+function used() {
+  free \
+    | awk '
+      /^Mem/ {
+        free=$2 - ($6 + $7);
+        total=$2
+      }
+      END { print int((free / total) * 100) }
+    '
+}
+
 function memory_graph() {
   bargraph $(_memory_pressure)
 }
 
-used=$(_memory_pressure)
+used=$(used)
 if [[ ${used} -gt ${THRESHOLD} ]]; then
   color='#[fg=red]'
 else
   color='#[fg=colour015]'
 fi
 
-printf "M %s%s#[fg=colour015]" "${color}" "$(bargraph "${used}")"
+printf "M:%s%s%%#[fg=colour015]" ${color} ${used}
 
 # vim: ft=sh
