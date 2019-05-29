@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+source "$(dirname "$0")/../lib/bargraph.sh"
+
+function value() {
+	pamixer --get-volume
+}
+
+function muted() {
+  $(pamixer --get-mute)
+}
+
+v=$(value)
+if muted; then
+  color='#[fg=red]'
+else
+  color='#[fg=colour015]'
+fi
+
+printf "V%s%s#[fg=colour015]" ${color} "$(bargraph $v)"
+
+# vim: ft=sh
