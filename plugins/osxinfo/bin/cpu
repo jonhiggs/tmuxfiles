@@ -1,36 +1,11 @@
 #!/usr/bin/env bash
 source "$(dirname "$0")/../lib/bargraph.sh"
-source "$(dirname "$0")/../lib/redis.sh"
-THRESHOLD_PERCENT=80
-THRESHOLD_TEMP=60
-CACHE_DURATION=5
-REDIS_CMD="redis-cli -s /tmp/redis.sock"
-
-get_data() {
-  data=$(${REDIS_CMD} get cpu_data)
-  if [[ -n "${data}" ]]; then
-    echo ${data}
-    return 0
-  fi
-
-  data=$(cpu_used)
-  ${REDIS_CMD} set cpu_data "${data}" > /dev/null
-  ${REDIS_CMD} expire cpu_data ${CACHE_DURATION} > /dev/null
-  echo ${data}
-}
 
 function cpu_used() {
   top -b -n2 -p1 | awk '/^%Cpu/ { s=$8 } END { print 100 - int(s) }'
 }
 
-used=$(get_data)
-temp=$(osx-cpu-temp | cut -d. -f1)
-if [[ ${used} -gt ${THRESHOLD_PERCENT} ]]; then
-  color='#[fg=red]'
-elif [[ ${temp} -gt ${THRESHOLD_TEMP} ]]; then
-  color='#[fg=red]'
-else
-  color='#[fg=colour015]'
-fi
+used=$(cpu_used)
+color='#[fg=colour015]'
 
-printf "C:%s%s%%#[fg=colour015]" ${color} ${used}
+printf "C%s%s#[fg=colour015]" ${color} "$(bargraph ${used})"
