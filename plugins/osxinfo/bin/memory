@@ -16,7 +16,7 @@ function used() {
   free \
     | awk '
       /^Mem/ {
-        used = ($2 - $7);
+        used = $3;
         total = $2;
         print int((used / total) * 100)
       }
