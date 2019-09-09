@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+source "$(dirname "$0")/../lib/bargraph.sh"
+
+function _temps() {
+  sensors | awk '/^Core/ { print int($3) }'
+}
+
+printf "T"
+for t in $(_temps); do
+  if [[ $t -gt 90 ]]; then
+    color='#[fg=red]'
+  else
+    color='#[fg=colour172]'
+  fi
+
+  v=$(( (($t - 50) / 10) * 2 ))
+  printf "%s%s#[fg=colour015]" ${color} "$(bargraph ${v})"
+  i+=1
+done
