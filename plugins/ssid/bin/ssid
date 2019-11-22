@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+iw wlp2s0 info \
+  | awk '/\t*ssid/ { print $2 }'
