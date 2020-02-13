@@ -5,7 +5,7 @@ function interpolate_options() {
     | envsubst
 }
 
-export HOTCLOCK_CMD='#{?client_prefix, #[bg=red]#[fg=white] #(date "+%H:%M") #[bg=colour234] ,  #(date "+%H:%M")  }'
+export HOTCLOCK_CMD='    #(date +%Y-%m-%d)#{?client_prefix, #[bg=red]#[fg=white] #(date "+%H:%M") #[bg=colour234] ,  #(date "+%H:%M")  }'
 
 for option in status-left status-right; do
   tmux set-option -gq "${option}" "$(interpolate_options "${option}")"
